@@ -44,6 +44,23 @@ const HomeScreen = () => {
           AnimatedScrollTranslateX
         </Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('AnimatedTopTab')}
+        style={{
+          backgroundColor: '#333',
+          paddingHorizontal: 8,
+          paddingVertical: 12,
+          borderRadius: 12,
+          marginBottom: 12,
+        }}>
+        <Text
+          style={{
+            color: 'white',
+            textAlign: 'center',
+          }}>
+          AnimatedTopTab
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };

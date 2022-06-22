@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen';
 import AnimatedScroll3D from './AnimatedScroll';
 import AnimatedScrollTranslateX from './AnimatedScrollTranslateX';
+import AnimatedTopTab from './AnimatedTopTab';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ const RootNavigator = () => {
           name="AnimatedScrollTranslateX"
           component={AnimatedScrollTranslateX}
         />
+        <Stack.Screen name="AnimatedTopTab" component={AnimatedTopTab} />
       </Stack.Navigator>
     </NavigationContainer>
   );
