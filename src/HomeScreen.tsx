@@ -61,6 +61,42 @@ const HomeScreen = () => {
           AnimatedTopTab
         </Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate('RotationLucky')}
+        style={{
+          backgroundColor: '#333',
+          paddingHorizontal: 8,
+          paddingVertical: 12,
+          borderRadius: 12,
+          marginBottom: 12,
+        }}>
+        <Text
+          style={{
+            color: 'white',
+            textAlign: 'center',
+          }}>
+          Rotation Lucky
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate('AnimatedCarousel')}
+        style={{
+          backgroundColor: '#333',
+          paddingHorizontal: 8,
+          paddingVertical: 12,
+          borderRadius: 12,
+          marginBottom: 12,
+        }}>
+        <Text
+          style={{
+            color: 'white',
+            textAlign: 'center',
+          }}>
+          Image Detail Animated
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };

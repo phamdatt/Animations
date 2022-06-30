@@ -5,6 +5,8 @@ import HomeScreen from './HomeScreen';
 import AnimatedScroll3D from './AnimatedScroll';
 import AnimatedScrollTranslateX from './AnimatedScrollTranslateX';
 import AnimatedTopTab from './AnimatedTopTab';
+import RotationLucky from './RotationLucky';
+import AnimatedCarousel from './AnimatedCarousel';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +25,8 @@ const RootNavigator = () => {
           component={AnimatedScrollTranslateX}
         />
         <Stack.Screen name="AnimatedTopTab" component={AnimatedTopTab} />
+        <Stack.Screen name="RotationLucky" component={RotationLucky} />
+        <Stack.Screen name="AnimatedCarousel" component={AnimatedCarousel} />
       </Stack.Navigator>
     </NavigationContainer>
   );
