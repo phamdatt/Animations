@@ -19,22 +19,22 @@ const data = [
 ];
 const {width, height} = Dimensions.get('screen');
 export const AnimatedCarouselChild = (props: any) => {
-  const {visible, onChange} = props;
-  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const {visible, onChange,activeIndexImage} = props;
+  const [activeIndex, setActiveIndex] = useState<number>(activeIndexImage);
 
   const refFlastListParent = useRef<FlatList>(null);
   const refFlastListChild = useRef<FlatList>(null);
   const onScroll = (index: number) => {
     refFlastListParent?.current?.scrollToIndex({
       animated: true,
-      index: index,
+      index: activeIndex,
     });
   };
 
   const onScrollItemChild = (index: number) => {
     refFlastListChild?.current?.scrollToIndex({
       animated: true,
-      index: index,
+      index: activeIndex,
     });
   };
   return (
@@ -46,6 +46,7 @@ export const AnimatedCarouselChild = (props: any) => {
           setActiveIndex(Math.floor(e.nativeEvent.contentOffset.x / width));
           onScrollItemChild(Math.floor(e.nativeEvent.contentOffset.x / width));
         }}
+        initialScrollIndex={activeIndex}
         bounces={false}
         scrollEventThrottle={16}
         showsHorizontalScrollIndicator={false}
@@ -140,6 +141,7 @@ export const AnimatedCarouselChild = (props: any) => {
 
 function AnimatedCarousel() {
   const [visible, setVisible] = useState<boolean>(false);
+  const [activeIndexImage, setActiveIndexImage] = useState<boolean>(false);
   const onChange = () => {
     setVisible(!visible);
   };
@@ -153,14 +155,17 @@ function AnimatedCarousel() {
         pagingEnabled={true}
         data={data}
         keyExtractor={item => item}
-        renderItem={({item}) => {
+        renderItem={({item,index}) => {
           return (
             <TouchableOpacity
               style={{
                 width,
                 height: height / 2,
               }}
-              onPress={() => setVisible(true)}>
+              onPress={() => {
+                setActiveIndexImage(index)
+                setVisible(true);
+              }}>
               <Image
                 source={{uri: item}}
                 style={{
@@ -174,7 +179,7 @@ function AnimatedCarousel() {
         }}
       />
       {visible && (
-        <AnimatedCarouselChild onChange={onChange} visible={visible} />
+        <AnimatedCarouselChild onChange={onChange} visible={visible} activeIndexImage={activeIndexImage}/>
       )}
     </View>
   );
