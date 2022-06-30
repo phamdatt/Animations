@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   FlatList,
@@ -19,27 +19,42 @@ const data = [
 ];
 const {width, height} = Dimensions.get('screen');
 export const AnimatedCarouselChild = (props: any) => {
-  const {visible, onChange,activeIndexImage} = props;
-  const [activeIndex, setActiveIndex] = useState<number>(activeIndexImage);
+  const {visible, onChange, activeIndexImage} = props;
+  const [activeIndex, setActiveIndex] = useState<number>(0);
 
   const refFlastListParent = useRef<FlatList>(null);
   const refFlastListChild = useRef<FlatList>(null);
   const onScroll = (index: number) => {
     refFlastListParent?.current?.scrollToIndex({
       animated: true,
-      index: activeIndex,
+      index: index,
     });
   };
 
   const onScrollItemChild = (index: number) => {
     refFlastListChild?.current?.scrollToIndex({
       animated: true,
-      index: activeIndex,
+      index: index,
     });
   };
+
+  useEffect(() => {
+    onScrollItemChild(activeIndexImage);
+    onScroll(activeIndexImage);
+  }, [activeIndexImage]);
+
   return (
     <Modal visible={visible} animationType="fade" style={{flex: 1}}>
       <FlatList
+        onScrollToIndexFailed={info => {
+          const wait = new Promise((resolve: any) => setTimeout(resolve, 200));
+          wait.then(() => {
+            refFlastListParent.current?.scrollToIndex({
+              index: info.index,
+              animated: true,
+            });
+          });
+        }}
         ref={refFlastListParent}
         horizontal
         onScroll={e => {
@@ -84,6 +99,15 @@ export const AnimatedCarouselChild = (props: any) => {
           bottom: 70,
         }}
         ref={refFlastListChild}
+        onScrollToIndexFailed={info => {
+          const wait = new Promise((resolve: any) => setTimeout(resolve, 200));
+          wait.then(() => {
+            refFlastListChild.current?.scrollToIndex({
+              index: info.index,
+              animated: true,
+            });
+          });
+        }}
         initialScrollIndex={activeIndex}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -141,7 +165,7 @@ export const AnimatedCarouselChild = (props: any) => {
 
 function AnimatedCarousel() {
   const [visible, setVisible] = useState<boolean>(false);
-  const [activeIndexImage, setActiveIndexImage] = useState<boolean>(false);
+  const [activeIndexImage, setActiveIndexImage] = useState<number>(0);
   const onChange = () => {
     setVisible(!visible);
   };
@@ -155,7 +179,7 @@ function AnimatedCarousel() {
         pagingEnabled={true}
         data={data}
         keyExtractor={item => item}
-        renderItem={({item,index}) => {
+        renderItem={({item, index}) => {
           return (
             <TouchableOpacity
               style={{
@@ -163,7 +187,7 @@ function AnimatedCarousel() {
                 height: height / 2,
               }}
               onPress={() => {
-                setActiveIndexImage(index)
+                setActiveIndexImage(index);
                 setVisible(true);
               }}>
               <Image
@@ -179,7 +203,11 @@ function AnimatedCarousel() {
         }}
       />
       {visible && (
-        <AnimatedCarouselChild onChange={onChange} visible={visible} activeIndexImage={activeIndexImage}/>
+        <AnimatedCarouselChild
+          onChange={onChange}
+          visible={visible}
+          activeIndexImage={activeIndexImage}
+        />
       )}
     </View>
   );
